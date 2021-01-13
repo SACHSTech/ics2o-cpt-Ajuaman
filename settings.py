@@ -10,5 +10,12 @@ WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 
+# SOME VARIABLE DECLARATIONS
 floorX = 0
 floorY = 900
+scroll_speed = 4
+
+playerX = 250
+playerY = 500
+
+player_jump_height = 5
