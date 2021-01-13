@@ -16,6 +16,6 @@ floorY = 900
 scroll_speed = 4
 
 playerX = 250
-playerY = 500
+playerY = 150
 
 player_jump_height = 5

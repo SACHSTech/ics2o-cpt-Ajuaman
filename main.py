@@ -13,7 +13,12 @@ def floor_looper():
 size = (s.WIDTH, s.HEIGHT)
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Game")
- 
+
+font = pygame.font.SysFont('Comic Sans MS', 30)
+troll_font_surface = font.render('haha jk no flabby birb', False, (0, 0, 0))
+
+
+
 run = True
 transparent = (0, 0, 0, 0)
 # SETTING A BACKGROUND
@@ -28,6 +33,9 @@ player_surface = pygame.transform.scale(player_surface, (70, 70))
 
 game_over_surface = pygame.transform.scale2x(pygame.image.load("assets/message.png")).convert_alpha()
 game_over_ract = game_over_surface.get_rect(center = (288, 512))
+
+
+
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
@@ -48,6 +56,7 @@ while run:
 
     screen.blit(floor_surface, (s.floorX, s.floorY))
 
+
     # THIS IS OUR PLAYER 
     #screen.blit(player_surface, (s.playerX, s.playerY))
     
@@ -58,8 +67,11 @@ while run:
     # IF A CONTROL BUTTON IS PRESSED THE STARTUP SCREEN DISAPPEARS
     if keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[pygame.K_RIGHT] or keys[pygame.K_LEFT]:
         game_over_surface.fill(transparent)
-    
+        screen.blit(troll_font_surface,(0,0))
+
     screen.blit(player_surface, (s.playerX, s.playerY))
+    
+
 
     if keys[pygame.K_UP]:
         s.playerY -= s.player_jump_height
@@ -82,5 +94,7 @@ while run:
     pygame.display.update()
      # --- Limit to 60 frames per second
     clock.tick(s.FPS)
+
+
 
 pygame.quit()
