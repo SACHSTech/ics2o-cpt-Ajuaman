@@ -12,7 +12,11 @@ def floor_looper():
 # SOME INITIALIZATION OF OUR FRAME
 size = (s.WIDTH, s.HEIGHT)
 screen = pygame.display.set_mode(size)
-pygame.display.set_caption("Game")
+pygame.display.set_caption("(Kinda) Fake Flappy Bird")
+
+programIcon = pygame.image.load('assets/bird.png')
+
+pygame.display.set_icon(programIcon)
 
 font = pygame.font.SysFont('Comic Sans MS', 30)
 troll_font_surface = font.render('haha jk no flabby birb', False, (0, 0, 0))
@@ -28,7 +32,7 @@ bg_surface = pygame.transform.scale2x(bg_surface)
 floor_surface = pygame.image.load("assets/base.png")
 floor_surface = pygame.transform.scale2x(floor_surface)
 
-player_surface = pygame.image.load("assets/sphere.png")
+player_surface = pygame.image.load("assets/bird.png")
 player_surface = pygame.transform.scale(player_surface, (70, 70))
 
 game_over_surface = pygame.transform.scale2x(pygame.image.load("assets/message.png")).convert_alpha()
