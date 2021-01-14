@@ -54,8 +54,8 @@ player_surface = pygame.transform.scale(player_surface, (70, 70))
 game_over_surface = pygame.transform.scale2x(pygame.image.load("assets/message.png")).convert_alpha()
 game_over_ract = game_over_surface.get_rect(center = (288, 512))
 
-virus_surface = pygame.image.load('assets/virus.jpg')
-virus_surface = pygame.transform.scale(virus_surface, (100, 100))
+virus_surface = pygame.image.load('assets/virus man.png')
+virus_surface = pygame.transform.scale(virus_surface, (150, 150))
 virus_list = []
 SPAWNVIRUS = pygame.USEREVENT 
 
