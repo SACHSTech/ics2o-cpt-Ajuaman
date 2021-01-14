@@ -1,13 +1,29 @@
 import pygame
 import settings as s
 import time
-
+import random
+from random import randint
 pygame.init()
 pygame.font.init()
 
 def floor_looper():
     screen.blit(floor_surface, (s.floorX, 900))
     screen.blit(floor_surface, (s.floorX + 576, 900))
+
+# CREATING VIRUS OBSTACLES
+def create_virus():
+    random_virus_position = randint(0, 800)
+    new_virus = virus_surface.get_rect(midtop = (700, random_virus_position))
+    return new_virus
+
+def move_virus(viruses):
+    for virus in viruses:
+        virus.centerx -=5
+    return viruses
+
+def draw_virus(viruses):
+    for virus in viruses:
+        screen.blit(virus_surface, virus)
 
 # SOME INITIALIZATION OF OUR FRAME
 size = (s.WIDTH, s.HEIGHT)
@@ -18,9 +34,9 @@ programIcon = pygame.image.load('assets/bird.png')
 
 pygame.display.set_icon(programIcon)
 
-font = pygame.font.SysFont('Comic Sans MS', 30)
+font = pygame.font.SysFont('Comic Sans MS', 20)
 troll_font_surface = font.render('haha jk no flabby birb', False, (0, 0, 0))
-
+dodge_font_surface = font.render('dodge da viruses! they are computer viruses and they hurt!!!', False, (0, 0, 0))
 
 
 run = True
@@ -38,7 +54,14 @@ player_surface = pygame.transform.scale(player_surface, (70, 70))
 game_over_surface = pygame.transform.scale2x(pygame.image.load("assets/message.png")).convert_alpha()
 game_over_ract = game_over_surface.get_rect(center = (288, 512))
 
+virus_surface = pygame.image.load('assets/virus.jpg')
+virus_surface = pygame.transform.scale(virus_surface, (100, 100))
+virus_list = []
+SPAWNVIRUS = pygame.USEREVENT 
+possible_heights = [randint(0, 1000), randint(0, 1000), randint(0, 1000), randint(0, 1000), randint(0, 1000), randint(0, 1000), randint(0, 1000)]
 
+# SPAWN A VIRUS OBSTACLE EVERY 900 MILLISECOND
+pygame.time.set_timer(SPAWNVIRUS, 900)
 
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
@@ -48,9 +71,16 @@ while run:
     for event in pygame.event.get(): # User did something
         if event.type == pygame.QUIT: # If user clicked close
             run = False # Flag that we are done so we exit this loop
+        if event.type == SPAWNVIRUS:
+            virus_list.append(create_virus())
 
     screen.blit(bg_surface, (0,0))
 
+    # VIRUSES
+    virus_list = move_virus(virus_list)
+    draw_virus(virus_list)
+
+    # FLOOR LOOPS
     s.floorX -= 4
     floor_looper()
 
@@ -61,8 +91,6 @@ while run:
     screen.blit(floor_surface, (s.floorX, s.floorY))
 
 
-    # THIS IS OUR PLAYER 
-    #screen.blit(player_surface, (s.playerX, s.playerY))
     
     screen.blit(game_over_surface, game_over_ract)
     # GET KEY PRESSED FROM USER. STORE IN KEYS VARIABLE
@@ -72,7 +100,7 @@ while run:
     if keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[pygame.K_RIGHT] or keys[pygame.K_LEFT]:
         game_over_surface.fill(transparent)
         screen.blit(troll_font_surface,(0,0))
-
+        screen.blit(dodge_font_surface,(0, 50))
     screen.blit(player_surface, (s.playerX, s.playerY))
     
 
