@@ -65,6 +65,9 @@ pygame.time.set_timer(SPAWNVIRUS, 900)
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
+# FLAPPY SCREEN DETERMINES WHAT SCREEN YOU ARE ON. IF YOU ARE ON STARTUP SCREEN FLAPPY SCRREN WILL BE EQUAL TO 0. OTHERWISE, 1
+flappy_screen = 0
+
 # -------- Main Program Loop -----------
 while run:
     for event in pygame.event.get(): # User did something
@@ -72,9 +75,6 @@ while run:
             run = False # Flag that we are done so we exit this loop
         if event.type == SPAWNVIRUS:
             virus_list.append(create_virus())
-
-    # FLAPPY SCREEN DETERMINES WHAT SCREEN YOU ARE ON. IF YOU ARE ON STARTUP SCREEN FLAPPY SCRREN WILL BE EQUAL TO 0. OTHERWISE, 1
-    flappy_screen = 0
 
     # GET KEY PRESSED FROM USER. STORE IN KEYS VARIABLE
     keys = pygame.key.get_pressed()
@@ -85,12 +85,9 @@ while run:
         screen.blit(troll_font_surface,(0,0))
         screen.blit(dodge_font_surface,(0, 50))
         flappy_screen = 1
-
+    
+    print(flappy_screen)
     screen.blit(bg_surface, (0,0))
-
-    # VIRUSES
-    virus_list = move_virus(virus_list)
-    draw_virus(virus_list)
 
     # FLOOR LOOPS
     s.floorX -= 4
@@ -104,6 +101,10 @@ while run:
     screen.blit(game_over_surface, game_over_ract)
     screen.blit(player_surface, (s.playerX, s.playerY))
     
+    if flappy_screen > 0:
+        # VIRUSES
+        virus_list = move_virus(virus_list)
+        draw_virus(virus_list)
 
     if keys[pygame.K_UP]:
         s.playerY -= s.player_jump_height
