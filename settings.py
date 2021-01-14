@@ -18,4 +18,4 @@ scroll_speed = 4
 playerX = 250
 playerY = 150
 
-player_jump_height = 5
+player_jump_height = 10

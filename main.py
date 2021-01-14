@@ -18,7 +18,7 @@ def create_virus():
 
 def move_virus(viruses):
     for virus in viruses:
-        virus.centerx -=5
+        virus.centerx -=10
     return viruses
 
 def draw_virus(viruses):
@@ -55,12 +55,12 @@ game_over_surface = pygame.transform.scale2x(pygame.image.load("assets/message.p
 game_over_ract = game_over_surface.get_rect(center = (288, 512))
 
 virus_surface = pygame.image.load('assets/virus man.png')
-virus_surface = pygame.transform.scale(virus_surface, (150, 150))
+virus_surface = pygame.transform.scale(virus_surface, (130, 130))
 virus_list = []
 SPAWNVIRUS = pygame.USEREVENT 
 
 # SPAWN A VIRUS OBSTACLE EVERY 900 MILLISECOND
-pygame.time.set_timer(SPAWNVIRUS, 900)
+pygame.time.set_timer(SPAWNVIRUS, 800)
 
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
@@ -90,7 +90,7 @@ while run:
     screen.blit(bg_surface, (0,0))
 
     # FLOOR LOOPS
-    s.floorX -= 4
+    s.floorX -= 7
     floor_looper()
 
     # RESETING THE FLOORX POSITION ONCE IT REACHES A CERTAIN POSITION
