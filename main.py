@@ -3,6 +3,7 @@ import settings as s
 import time
 import random
 from random import randint
+
 pygame.init()
 pygame.font.init()
 
@@ -50,6 +51,7 @@ floor_surface = pygame.transform.scale2x(floor_surface)
 
 player_surface = pygame.image.load("assets/bird.png")
 player_surface = pygame.transform.scale(player_surface, (70, 70))
+player_rect = player_surface.get_rect()
 
 game_over_surface = pygame.transform.scale2x(pygame.image.load("assets/message.png")).convert_alpha()
 game_over_ract = game_over_surface.get_rect(center = (288, 512))
@@ -60,14 +62,14 @@ virus_list = []
 SPAWNVIRUS = pygame.USEREVENT 
 
 # SPAWN A VIRUS OBSTACLE EVERY 900 MILLISECOND
-pygame.time.set_timer(SPAWNVIRUS, 800)
+pygame.time.set_timer(SPAWNVIRUS, 1000)
 
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
 # FLAPPY SCREEN DETERMINES WHAT SCREEN YOU ARE ON. IF YOU ARE ON STARTUP SCREEN FLAPPY SCRREN WILL BE EQUAL TO 0. OTHERWISE, 1
 flappy_screen = 0
-
+collide_counter = 0
 # -------- Main Program Loop -----------
 while run:
     for event in pygame.event.get(): # User did something
@@ -86,7 +88,6 @@ while run:
         screen.blit(dodge_font_surface,(0, 50))
         flappy_screen = 1
     
-    print(flappy_screen)
     screen.blit(bg_surface, (0,0))
 
     # FLOOR LOOPS
@@ -105,6 +106,11 @@ while run:
         # VIRUSES
         virus_list = move_virus(virus_list)
         draw_virus(virus_list)
+        for virus in virus_list:
+            if player_rect.colliderect(virus):
+                collide_counter+=1
+                print(collide_counter)
+
 
     if keys[pygame.K_UP]:
         s.playerY -= s.player_jump_height
