@@ -29,11 +29,6 @@ def draw_virus(viruses):
     for virus in viruses:
         screen.blit(virus_surface, virus)
 
-def is_collided(viruses):
-    for virus in viruses:
-        if player_rect.colliderect(virus):
-            print('collision')
-
 # SOME INITIALIZATION OF OUR FRAME
 size = (s.WIDTH, s.HEIGHT)
 screen = pygame.display.set_mode(size)
@@ -69,8 +64,8 @@ virus_surface = pygame.transform.scale(virus_surface, (130, 130))
 virus_list = []
 SPAWNVIRUS = pygame.USEREVENT 
 
-# SPAWN A VIRUS OBSTACLE EVERY 900 MILLISECOND
-pygame.time.set_timer(SPAWNVIRUS, 100)
+# SPAWN A VIRUS OBSTACLE EVERY 500 MILLISECOND
+pygame.time.set_timer(SPAWNVIRUS, 500)
 
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
@@ -97,26 +92,6 @@ while run:
         screen.blit(dodge_font_surface,(0, 50))
         flappy_screen = 1
 
-    # FLOOR LOOPS
-    s.floorX -= 7
-    floor_looper()
-
-    # RESETING THE FLOORX POSITION ONCE IT REACHES A CERTAIN POSITION
-    if s.floorX <= -576:
-        s.floorX = 0
-
-    screen.blit(floor_surface, (s.floorX, s.floorY))
-    screen.blit(game_over_surface, game_over_ract)
-    screen.blit(player_surface, (s.playerX, s.playerY))
-
-    if flappy_screen > 0:
-        # VIRUSES
-        virus_list = move_virus(virus_list)
-        draw_virus(virus_list)
-        for virus in virus_list:
-            if player_rect.colliderect(virus):
-                print('collide')
-
 
     if keys[pygame.K_UP]:
         s.playerY -= s.player_jump_height
@@ -137,6 +112,30 @@ while run:
         s.playerX -= s.player_jump_height
         if s.playerX < 0:
             s.playerX = 0
+
+    player_rect.centerx = s.playerX
+    player_rect.centery = s.playerY
+
+    # FLOOR LOOPS
+    s.floorX -= 7
+    floor_looper()
+
+    # RESETING THE FLOORX POSITION ONCE IT REACHES A CERTAIN POSITION
+    if s.floorX <= -576:
+        s.floorX = 0
+
+    screen.blit(floor_surface, (s.floorX, s.floorY))
+    screen.blit(game_over_surface, game_over_ract)
+    screen.blit(player_surface, (s.playerX, s.playerY))
+
+    if flappy_screen > 0:
+        # VIRUSES
+        virus_list = move_virus(virus_list)
+        draw_virus(virus_list)
+        for virus in virus_list:
+            if player_rect.colliderect(virus):
+                collide_counter+=1
+                print(collide_counter)
 
     pygame.display.update()
      # --- Limit to 60 frames per second
