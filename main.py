@@ -1,3 +1,4 @@
+  
 import pygame
 import settings as s
 import time
@@ -6,6 +7,8 @@ from random import randint
 
 pygame.init()
 pygame.font.init()
+collide_counter = 0
+
 
 def floor_looper():
     screen.blit(floor_surface, (s.floorX, 900))
@@ -25,6 +28,11 @@ def move_virus(viruses):
 def draw_virus(viruses):
     for virus in viruses:
         screen.blit(virus_surface, virus)
+
+def is_collided(viruses):
+    for virus in viruses:
+        if player_rect.colliderect(virus):
+            print('collision')
 
 # SOME INITIALIZATION OF OUR FRAME
 size = (s.WIDTH, s.HEIGHT)
@@ -62,14 +70,13 @@ virus_list = []
 SPAWNVIRUS = pygame.USEREVENT 
 
 # SPAWN A VIRUS OBSTACLE EVERY 900 MILLISECOND
-pygame.time.set_timer(SPAWNVIRUS, 1000)
+pygame.time.set_timer(SPAWNVIRUS, 100)
 
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
 # FLAPPY SCREEN DETERMINES WHAT SCREEN YOU ARE ON. IF YOU ARE ON STARTUP SCREEN FLAPPY SCRREN WILL BE EQUAL TO 0. OTHERWISE, 1
 flappy_screen = 0
-collide_counter = 0
 # -------- Main Program Loop -----------
 while run:
     for event in pygame.event.get(): # User did something
@@ -82,13 +89,13 @@ while run:
     keys = pygame.key.get_pressed()
     # IF A CONTROL BUTTON IS PRESSED THE STARTUP SCREEN DISAPPEARS
 
+    screen.blit(bg_surface, (0,0))
+
     if keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[pygame.K_RIGHT] or keys[pygame.K_LEFT]:
         game_over_surface.fill(transparent)
         screen.blit(troll_font_surface,(0,0))
         screen.blit(dodge_font_surface,(0, 50))
         flappy_screen = 1
-    
-    screen.blit(bg_surface, (0,0))
 
     # FLOOR LOOPS
     s.floorX -= 7
@@ -101,15 +108,14 @@ while run:
     screen.blit(floor_surface, (s.floorX, s.floorY))
     screen.blit(game_over_surface, game_over_ract)
     screen.blit(player_surface, (s.playerX, s.playerY))
-    
+
     if flappy_screen > 0:
         # VIRUSES
         virus_list = move_virus(virus_list)
         draw_virus(virus_list)
         for virus in virus_list:
             if player_rect.colliderect(virus):
-                collide_counter+=1
-                print(collide_counter)
+                print('collide')
 
 
     if keys[pygame.K_UP]:
@@ -124,6 +130,8 @@ while run:
             
     elif keys[pygame.K_RIGHT]:
         s.playerX += s.player_jump_height
+        if s.playerX + 68 > s.WIDTH:
+            s.playerX = s.WIDTH - 68 # 68 is just an arbitrary number that looks best in my opinion. No calculation.
 
     elif keys[pygame.K_LEFT]:
         s.playerX -= s.player_jump_height
