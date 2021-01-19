@@ -8,7 +8,8 @@ from random import randint
 pygame.init()
 pygame.font.init()
 collide_counter = 0
-
+life_to_subtract = 0
+life_left = 50000
 
 def floor_looper():
     screen.blit(floor_surface, (s.floorX, 900))
@@ -41,7 +42,7 @@ pygame.display.set_icon(programIcon)
 font = pygame.font.SysFont('Comic Sans MS', 20)
 troll_font_surface = font.render('haha jk no flabby birb', False, (0, 0, 0))
 dodge_font_surface = font.render('dodge da viruses! they are computer malware and they hurt!!!', False, (0, 0, 0))
-lives_text = font.render("Lives left:", False, (0, 0, 0))
+lives_text = font.render("Life left:", False, (0, 0, 0))
 
 run = True
 transparent = (0, 0, 0, 0)
@@ -63,15 +64,8 @@ virus_surface = pygame.image.load('assets/virus man.png')
 virus_surface = pygame.transform.scale(virus_surface, (130, 130))
 virus_list = []
 
-live1_surface = pygame.image.load("assets/bird.png")
-live1_surface = pygame.transform.scale(live1_surface, (50, 50))
-
-live2_surface = pygame.image.load("assets/bird.png")
-live2_surface = pygame.transform.scale(live2_surface, (50, 50))
-
-live3_surface = pygame.image.load("assets/bird.png")
-live3_surface = pygame.transform.scale(live3_surface, (50, 50))
-
+# LIFE BAR
+life_bar = pygame.Rect(110, 977, 200, 20)
 
 SPAWNVIRUS = pygame.USEREVENT 
 
@@ -140,21 +134,18 @@ while run:
     screen.blit(player_surface, (s.playerX, s.playerY))
 
     # DRAWING THE LIVES ICON
-    screen.blit(live1_surface, (120, 950))
-    screen.blit(live2_surface, (190, 950))
-    screen.blit(live3_surface, (260, 950))
-
+    
     screen.blit(lives_text,(10, 970))
-
+    pygame.draw.rect(screen, s.GREEN, life_bar)
     if flappy_screen > 0:
         # VIRUSES
         virus_list = move_virus(virus_list)
         draw_virus(virus_list)
         for virus in virus_list:
             if player_rect.colliderect(virus):
-                collide_counter+=1
-                print(collide_counter)
-            
+                life_to_subtract += 1
+                life_left -= life_to_subtract
+                print(life_left)
 
     pygame.display.update()
      # --- Limit to 60 frames per second
