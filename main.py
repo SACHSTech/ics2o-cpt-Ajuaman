@@ -41,7 +41,7 @@ pygame.display.set_icon(programIcon)
 font = pygame.font.SysFont('Comic Sans MS', 20)
 troll_font_surface = font.render('haha jk no flabby birb', False, (0, 0, 0))
 dodge_font_surface = font.render('dodge da viruses! they are computer malware and they hurt!!!', False, (0, 0, 0))
-
+lives_text = font.render("Lives left:", False, (0, 0, 0))
 
 run = True
 transparent = (0, 0, 0, 0)
@@ -62,6 +62,17 @@ game_over_ract = game_over_surface.get_rect(center = (288, 512))
 virus_surface = pygame.image.load('assets/virus man.png')
 virus_surface = pygame.transform.scale(virus_surface, (130, 130))
 virus_list = []
+
+live1_surface = pygame.image.load("assets/bird.png")
+live1_surface = pygame.transform.scale(live1_surface, (50, 50))
+
+live2_surface = pygame.image.load("assets/bird.png")
+live2_surface = pygame.transform.scale(live2_surface, (50, 50))
+
+live3_surface = pygame.image.load("assets/bird.png")
+live3_surface = pygame.transform.scale(live3_surface, (50, 50))
+
+
 SPAWNVIRUS = pygame.USEREVENT 
 
 # SPAWN A VIRUS OBSTACLE EVERY 500 MILLISECOND
@@ -79,19 +90,19 @@ while run:
             run = False # Flag that we are done so we exit this loop
         if event.type == SPAWNVIRUS:
             virus_list.append(create_virus())
-
+             
     # GET KEY PRESSED FROM USER. STORE IN KEYS VARIABLE
     keys = pygame.key.get_pressed()
     # IF A CONTROL BUTTON IS PRESSED THE STARTUP SCREEN DISAPPEARS
 
     screen.blit(bg_surface, (0,0))
 
-    if keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[pygame.K_RIGHT] or keys[pygame.K_LEFT]:
+    if keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[pygame.K_RIGHT] or keys[pygame.K_LEFT] and flappy_screen == 0:
         game_over_surface.fill(transparent)
         screen.blit(troll_font_surface,(0,0))
         screen.blit(dodge_font_surface,(0, 50))
         flappy_screen = 1
-
+        
 
     if keys[pygame.K_UP]:
         s.playerY -= s.player_jump_height
@@ -128,6 +139,13 @@ while run:
     screen.blit(game_over_surface, game_over_ract)
     screen.blit(player_surface, (s.playerX, s.playerY))
 
+    # DRAWING THE LIVES ICON
+    screen.blit(live1_surface, (120, 950))
+    screen.blit(live2_surface, (190, 950))
+    screen.blit(live3_surface, (260, 950))
+
+    screen.blit(lives_text,(10, 970))
+
     if flappy_screen > 0:
         # VIRUSES
         virus_list = move_virus(virus_list)
@@ -136,6 +154,7 @@ while run:
             if player_rect.colliderect(virus):
                 collide_counter+=1
                 print(collide_counter)
+            
 
     pygame.display.update()
      # --- Limit to 60 frames per second
