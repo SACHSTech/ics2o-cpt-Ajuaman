@@ -24,6 +24,10 @@ life_left = 50000
 run = True
 transparent = (0, 0, 0, 0)
 
+
+random_antivirus_positionY = randint(0, 800)
+
+
 # LOOPING THE FLOOR TO CREATE INFINITE SCROLL ILLUSION
 def floor_looper():
     screen.blit(floor_surface, (s.floorX, 900))
@@ -31,8 +35,9 @@ def floor_looper():
 
 # CREATING VIRUS OBSTACLES
 def create_virus():
+    random_virus_positionX = randint(600, 900)
     random_virus_positionY = randint(0, 800)
-    new_virus = virus_surface.get_rect(midtop = (700, random_virus_positionY))
+    new_virus = virus_surface.get_rect(midtop = (random_virus_positionX, random_virus_positionY))
     return new_virus
 
 def move_virus(viruses):
@@ -46,8 +51,9 @@ def draw_virus(viruses):
 
 # DRAWING ANTI VIRUSES FUNCTIONS
 def create_antivirus():
+    random_antivirus_positionX = randint(600, 1000)
     random_antivirus_positionY = randint(0, 800)
-    new_antivirus = antivirus_surface.get_rect(midtop = (700, random_antivirus_positionY))
+    new_antivirus = antivirus_surface.get_rect(midtop = (random_antivirus_positionX, random_antivirus_positionY))
     return new_antivirus
 
 def move_antivirus(antiviruses):
@@ -77,9 +83,6 @@ pygame.display.set_icon(programIcon)
 
 # DEALING WITH FONTS AND SIZES 
 font = pygame.font.SysFont('Comic Sans MS', 20)
-troll_font_surface = font.render('haha jk no flabby birb', False, (0, 0, 0))
-dodge_font_surface1 = font.render('dodge da viruses!', False, (0, 0, 0))
-dodge_font_surface2 = font.render('they are computer malware and they hurt!!!', False, (0, 0, 0))
 lives_text = font.render("Life left:", False, (0, 0, 0))
 
 
@@ -109,7 +112,7 @@ endgame_surface = pygame.image.load('assets/endgame.png')
 endgame_surface = pygame.transform.scale2x(endgame_surface)
 
 SPAWNVIRUS = pygame.USEREVENT 
-
+SPAWNANTIVIRUS = pygame.USEREVENT + 1
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
@@ -117,6 +120,7 @@ clock = pygame.time.Clock()
 flappy_screen = 0
 
 pygame.time.set_timer(SPAWNVIRUS, 500)
+pygame.time.set_timer(SPAWNANTIVIRUS, 10000)
 
 # -------- Main Program Loop -----------
 while run:
@@ -125,6 +129,7 @@ while run:
             run = False # Flag that we are done so we exit this loop
         if event.type == SPAWNVIRUS:
             virus_list.append(create_virus())
+        if event.type == SPAWNANTIVIRUS:
             antivirus_list.append(create_antivirus())
     
     # LIFE BAR LOGIC
@@ -138,11 +143,6 @@ while run:
 
     if (keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[pygame.K_RIGHT] or keys[pygame.K_LEFT]) and flappy_screen == 0:
         game_over_surface.fill(transparent)
-
-        # ADDS THE TEXT ON SCREEN
-        screen.blit(troll_font_surface,(0,0))
-        screen.blit(dodge_font_surface1,(0, 50))
-        screen.blit(dodge_font_surface2,(0, 100))
         
         # CHANGING THE VALUE OF flappy_screen
         flappy_screen = 1
@@ -203,15 +203,16 @@ while run:
 
         for virus in virus_list:
             if player_rect.colliderect(virus):
-                life_to_subtract += 1
+                life_to_subtract += 10
                 life_left -= life_to_subtract
                 print(calculate_healthbar_length(life_left))
             pygame.draw.rect(screen, s.GREEN, life_bar)
 
         for antivirus in antivirus_list:
             if player_rect.colliderect(antivirus):
-                life_to_subtract -= 1
+                life_to_subtract -= 5
                 life_left += life_to_subtract
+                print(calculate_healthbar_length(life_left))
             pygame.draw.rect(screen, s.GREEN, life_bar)
 
     # GAME LOGIC HERE
