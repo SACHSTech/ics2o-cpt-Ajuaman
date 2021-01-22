@@ -127,9 +127,9 @@ while run:
     for event in pygame.event.get(): # User did something
         if event.type == pygame.QUIT: # If user clicked close
             run = False # Flag that we are done so we exit this loop
-        if event.type == SPAWNVIRUS:
+        if flappy_screen == 1 and event.type == SPAWNVIRUS:
             virus_list.append(create_virus())
-        if event.type == SPAWNANTIVIRUS:
+        if flappy_screen == 1 and event.type == SPAWNANTIVIRUS:
             antivirus_list.append(create_antivirus())
     
     # LIFE BAR LOGIC
@@ -210,13 +210,13 @@ while run:
 
         for antivirus in antivirus_list:
             if player_rect.colliderect(antivirus):
-                life_to_subtract -= 5
+                life_to_subtract -= 10
                 life_left += life_to_subtract
                 print(calculate_healthbar_length(life_left))
             pygame.draw.rect(screen, s.GREEN, life_bar)
+    
 
     # GAME LOGIC HERE
-
     if calculate_healthbar_length(life_left) <= 0:
         screen.blit(bg_surface, (0,0))
         screen.blit(endgame_surface, (100, 412))
