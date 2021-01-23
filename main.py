@@ -104,7 +104,7 @@ virus_surface = pygame.image.load('assets/virus man.png')
 virus_surface = pygame.transform.scale(virus_surface, (130, 130))
 virus_list = []
 
-antivirus_surface = pygame.image.load('assets/sphere.png')
+antivirus_surface = pygame.image.load('assets/pog box.png')
 antivirus_surface = pygame.transform.scale(antivirus_surface, (90, 90))
 antivirus_list = []
 
