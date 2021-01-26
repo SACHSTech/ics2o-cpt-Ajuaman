@@ -24,7 +24,7 @@ life_left = 50000
 run = True
 transparent = (0, 0, 0, 0)
 
-
+# RANDOM POSITION
 random_antivirus_positionY = randint(0, 800)
 
 
