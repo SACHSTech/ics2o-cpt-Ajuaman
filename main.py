@@ -137,6 +137,7 @@ while run:
 
     # GET KEY PRESSED FROM USER. STORE IN KEYS VARIABLE
     keys = pygame.key.get_pressed()
+    
     # IF A CONTROL BUTTON IS PRESSED THE STARTUP SCREEN DISAPPEARS
 
     screen.blit(bg_surface, (0,0))
